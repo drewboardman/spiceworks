@@ -4,5 +4,5 @@ require "nokogiri"
 require "open-uri"
 Dir[File.dirname(__FILE__) + '/count_descendents/*.rb'].each {|file| require file }
 
-interface = CountDescendents::Interface.new
-interface.prompt
+# interface = CountDescendents::Interface.new
+# interface.prompt
