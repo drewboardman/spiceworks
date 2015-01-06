@@ -1,9 +1,11 @@
 module CountDescendents
   class Page
-    attr_accessor :url
+    attr_accessor :url, :first_child, :next_sibling
 
-    def initialize(url='')
+    def initialize(url='', first_child = '', next_sibling = '')
       @url = url
+      @first_child = first_child
+      @next_sibling = next_sibling
     end
 
     def self.parse_html
