@@ -10,17 +10,10 @@ module CountDescendents
       end
     end
 
-    context "#solicit_first_child" do
-      it "displays the correct message" do
+    context "#solicit_dom" do
+      it "displays the correct dom message" do
         interface = Interface.new
-        expect(interface.solicit_first_child).to eq("Enter the DOM element of the first child")  
-      end
-    end
-
-    context "#solicit_next_sibling" do
-      it "displays the correct message" do
-        interface = Interface.new
-        expect(interface.solicit_next_sibling).to eq("Enter the DOM element of the next sibling")  
+        expect(interface.solicit_dom).to eq("Enter the DOM element you would like the descendents of.")  
       end
     end
 
@@ -28,13 +21,14 @@ module CountDescendents
       it "returns a page object when given a URL" do
         interface = Interface.new
         url = "http://en.wikipedia.org/"
-        expect(interface.get_page(url).class).to eq(Page)
+        expect(interface.get_page.class).to eq(Page)
       end
     end
 
     context "#prompt" do
-      it "sets the url variable with the user's input" do
-        interface = Interface.new
+      it "does not solicit_url if given one" do
+        url = "http://en.wikipedia.org/" 
+        interface = Interface.new(url: url)
 
       end
     end

@@ -1,35 +1,31 @@
 module CountDescendents
   class Interface
-  attr_accessor :url
+  attr_accessor :url, :dom, :page
 
-    def initialize(page=Page.new)
-      @page = page
+    def initialize(params = {})
+      @url = params.fetch(:url, '')
+      @dom = params.fetch(:dom, '')
+    end
+
+    def prompt
+      puts solicit_url if @url.empty?
+      @url = STDIN.gets.chomp.to_s
+      puts solicit_dom if @dom.empty?
+      @dom = STDIN.gets.chomp.to_s
+      @page = get_page
     end
 
     def solicit_url
       "Please enter the full URL of the site you would like to investigate."
     end
 
-    def solicit_first_child
-      "Enter the DOM element of the first child"
+    def solicit_dom
+      "Enter the DOM element you would like the descendents of."
     end
 
-    def solicit_next_sibling
-      "Enter the DOM element of the next sibling"
+    def get_page
+      Page.new(url: @url, dom: @dom)
     end
 
-    def get_page(url ='', first_child = '', next_sibling = '')
-      Page.new("#{url}", "#{first_child}", "#{next_sibling}")
-    end
-
-    def prompt
-      puts solicit_url
-      url = gets chomp
-      puts solicit_first_child
-      first_child = gets chomp
-      puts solicit_next_sibling
-      next_sibling = gets chomp
-      page = get_page(url, first_child, next_sibling)
-    end
   end
 end

@@ -1,15 +1,14 @@
 module CountDescendents
   class Page
-    attr_accessor :url, :first_child, :next_sibling
+    attr_accessor :url, :dom, :doc
 
-    def initialize(url='', first_child = '', next_sibling = '')
-      @url = url
-      @first_child = first_child
-      @next_sibling = next_sibling
+    def initialize(params = {})
+      @url = params.fetch(:url, "")
+      @dom = params.fetch(:dom, "")
     end
 
     def self.parse_html
-      page = Nokogiri::HTML(open("#{@url}")) 
+      @doc = Nokogiri::HTML(open(@url)) 
     end
   end
 end
