@@ -5,7 +5,7 @@ require "open-uri"
 
 Dir[File.dirname(__FILE__) + '/count_descendents/*.rb'].each {|file| require file }
 
-  puts Dir.pwd
-  # interface = CountDescendents::Interface.new
-  # interface.prompt
+  # puts Dir.pwd
+   interface = CountDescendents::Interface.new
+   interface.prompt
 

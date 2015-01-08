@@ -18,10 +18,10 @@ module CountDescendents
     #   end
     # end
 
-    # context "#solicit_node_string" do
-    #   it "displays the correct node_string message" do
+    # context "#solicit_html_input" do
+    #   it "displays the correct html_input message" do
     #     interface = Interface.new
-    #     expect(interface.solicit_node_string).to eq("Enter the node you would like the descendents of.")  
+    #     expect(interface.solicit_html_input).to eq("Enter the node you would like the descendents of.")  
     #   end
     # end
 
@@ -30,6 +30,13 @@ module CountDescendents
         url = "http://www.bestbuy.com"
         interface = Interface.new(url: url)
         expect(interface.get_page.class).to eq(Page)
+      end
+
+      it "can pass input parameters to Page and they are accepted" do
+        interface = Interface.new(url: "http://www.bestbuy.com", html_input: '<ul class="utility-nav">')
+        page = Page.new(url: interface.url, html_input: interface.html_input)
+        expect(page.url).to eq(interface.url)
+        expect(page.html_input).to eq(interface.html_input)  
       end
     end
 
