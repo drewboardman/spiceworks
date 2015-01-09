@@ -11,19 +11,19 @@ module CountDescendents
       end
     end
 
-    # context "#solicit_url" do
-    #   it "displays the correct message" do
-    #     interface = Interface.new
-    #     expect(interface.solicit_url).to eq("Please enter the full URL of the site you would like to investigate.")  
-    #   end
-    # end
+    context "#solicit_url" do
+      it "displays the correct message" do
+        interface = Interface.new
+        expect(interface.solicit_url).to eq("Please enter the full URL of the site you would like to investigate (without string quotes).")  
+      end
+    end
 
-    # context "#solicit_html_input" do
-    #   it "displays the correct html_input message" do
-    #     interface = Interface.new
-    #     expect(interface.solicit_html_input).to eq("Enter the node you would like the descendents of.")  
-    #   end
-    # end
+    context "#solicit_html_input" do
+      it "displays the correct html_input message" do
+        interface = Interface.new
+        expect(interface.solicit_html_input).to eq("Enter the node you would like the descendents of(without string quotes).")  
+      end
+    end
 
     context "#get_page" do
       it "returns a page object when given a URL" do
