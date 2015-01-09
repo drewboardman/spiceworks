@@ -24,7 +24,8 @@ module CountDescendents
 
       it "displays an error if given invalid URL" do
       	page = Page.new(url: "google", html_input: '<ul class="utility-nav">')
-      	expect { page.parse_html(page.url) }.to output("error").to_stdout
+      	expect { page.parse_html(page.url) }.to output("Error: No such file or directory @ rb_sysopen - google for google. This often occurs if the URL given is not correct. Check that you used the exact address (including https, etc)
+").to_stdout
       end
     end
 

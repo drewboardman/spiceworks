@@ -38,18 +38,26 @@ module CountDescendents
 
     def descendent_count
       count = 0
-      @matching_node.traverse do |node|
-        count += 1
+      begin
+        @matching_node.traverse do |node|
+          count += 1
+        end
+        return count
+      rescue StandardError=>e
+        $stdout.puts "Error: #{e}"
       end
-      return count
     end
 
     def desc_array_tags
       tags = []
-      @matching_node.traverse do |desc|
-        tags << desc.name
+      begin
+        @matching_node.traverse do |desc|
+          tags << desc.name
+        end
+        return tags
+      rescue StandardError=>e
+        $stdout.puts "Error: #{e}"
       end
-      return tags
     end
 
   end
