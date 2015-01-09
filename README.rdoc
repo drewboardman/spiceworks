@@ -41,25 +41,25 @@ The errors outputted are normal, and are a result of tests that input invalid ar
 
 === Notes
 
-There are several notes I would like to make about the design of the gem and the decisions I made. The most pressing would be the Page#grab_node method. There are quirks with how Nokogiri and open-uri function that makes it tricky to take a raw HTML element and find a Nokogiri::Document::Element (which is a node) or an XML node. The best solution to this would be to prompt the user for css or xml selectors, and then use an Xpath command to find the node that way. The problem instructions were clear that the input would a an HTML element, Xpath inputs wouldn't satisfy the problem constraints.
+There are several notes I would like to make about the design of the gem and the decisions I made. The most pressing would be the Page#grab_node method. There are quirks with how Nokogiri and open-uri function that makes it tricky to take a raw HTML element and find a Nokogiri::Document::Element (which is a node) or an XML node. The best solution to this would be to prompt the user for css or xml selectors, and then use an Xpath command to find the node that way. The problem instructions were clear that the input would be an HTML element, so Xpath inputs wouldn't satisfy the problem constraints.
 
 The solution was to take the HTML as a string, convert that string into a Nokogiri::Document::Element, and then convert that into a string. This ensures that when I compare with the #to_s version of any given node on the site, they will match. Several issues arrise.
 
 * Nokogiri adds escape characters when using the Node#to_s method. So the following happens:
 
-* STDIN will take "" as string input, which will mess with open-uri's ability to read the URL or node.
-
-* Node#to_s on input HTML returns
+	* Node#to_s on input HTML returns
 
  	$ "<ul class=\"utility-nav\"/>"
 
-As you can see, there are added escape characters here that return false when compared with the site NodeSet.
+		As you can see, there are added escape characters here that return false when compared with the site NodeSet.
 
-* Node#to_html on input HTML returns
+	* Node#to_html on input HTML returns
 
     $ "<ul class=\"utility-nav\"></ul>" 
 
-This adds a closing tag, not found in the NodeSet on the site.
+	This adds a closing tag, not found in the NodeSet on the site.
+
+* STDIN will take "" as string input, which will mess with open-uri's ability to read the URL or node.
 
 Again, a better solution would be to prompt the user for CSS and Xpath selectors, but given the problem constraints the solution I came up with was to use String#gsub to remove all non-letters. Any given HTML trickery from Nokogiri would be eliminated from both the input HTML and the NodeSet from the site. An example of a similar issue can be found in {this Stack Overflow thread}[http://stackoverflow.com/questions/12330033/creating-a-source-element-without-a-closing-tag-in-nokogiri].
 
