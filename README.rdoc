@@ -25,11 +25,11 @@ To run the program, simply make sure you are in the countDescendents/count_desce
     $ ruby count_descendents.rb
 
 From there, follow the $stdout command messages in the console. When entering input, do not use quotes to indicate you are entering a string (this is explained below in the "Notes and Improvements" section). Also, be sure to enter the full web address that you are looking to parse. For example:
-
+````
 		$ http://www.bestbuy.com 		#valid URL input
 
 		$ www.bestbuy.com        		#invalid input.
-
+````
 === Testing
 
 To run the test suite, enter the directory countDescendents/count_descendents$ and run:
