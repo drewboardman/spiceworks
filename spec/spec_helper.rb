@@ -1,2 +1,6 @@
-require_relative "../lib/count_descendents.rb"
+require_relative "../lib/count_descendents/page.rb"
+require_relative "../lib/count_descendents/interface.rb"
 require "stringio"
+require "rubygems"
+require "nokogiri"
+require "open-uri"

@@ -25,39 +25,47 @@ module CountDescendents
 
     def grab_node(node_string)
       matches = []
-      if @doc.class == Nokogiri::HTML::Document
+
+      begin
         @doc.traverse do |node|
           matches << node if node.to_html.gsub(/\W+/, '').include?(node_string.gsub(/\W+/, ''))
         end
-        return matches.first
+      rescue
+        $stdout.puts "You entered an invalid URL. Nokogiri was not able to use the #traverse method. This usually means that an invalid URL was passed, which couldn't be opened."
       else
-        $stdout.puts "You entered an invalid URL. Nokogiri was not able to use the #traverse method. This usually means
-        that an invalid URL was passed, which couldn't be opened."
+        return matches.first
       end
+      
     end
 
     def descendent_count
       count = 0
+
       begin
         @matching_node.traverse do |node|
           count += 1
         end
+      rescue
+        $stdout.puts "Your node was invalid."
+      else
         return count
-      rescue StandardError=>e
-        $stdout.puts "Error: #{e}"
       end
+
     end
 
     def desc_array_tags
       tags = []
+
       begin
         @matching_node.traverse do |desc|
           tags << desc.name
         end
+      rescue
+        $stdout.puts "Your node was invalid."
+      else
         return tags
-      rescue StandardError=>e
-        $stdout.puts "Error: #{e}"
       end
+
     end
 
   end
