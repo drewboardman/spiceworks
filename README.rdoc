@@ -41,7 +41,7 @@ The errors outputted are normal, and are a result of tests that input invalid ar
 
 === Notes
 
-There are several notes I would like to make about the design of the gem and the decisions I made. The most pressing would be the Page#grab_node method. There are quirks with how Nokogiri and open-uri function that makes it tricky to take a raw HTML element and find a Nokogiri::Document::Element (which is a node) or an XML node. The best solution to this would be to prompt the user for css or xml selectors, and then use an Xpath command to find the node that way. Given the instructions, this would not solve the instructions given by the problem.
+There are several notes I would like to make about the design of the gem and the decisions I made. The most pressing would be the Page#grab_node method. There are quirks with how Nokogiri and open-uri function that makes it tricky to take a raw HTML element and find a Nokogiri::Document::Element (which is a node) or an XML node. The best solution to this would be to prompt the user for css or xml selectors, and then use an Xpath command to find the node that way. The problem instructions were clear that the input would a an HTML element, Xpath inputs wouldn't satisfy the problem constraints.
 
 The solution was to take the HTML as a string, convert that string into a Nokogiri::Document::Element, and then convert that into a string. This ensures that when I compare with the #to_s version of any given node on the site, they will match. Several issues arrise.
 
