@@ -65,7 +65,7 @@ This block illustrates the issue:
 These results do not match use #to_s or #to_html on a NodeSet element found within the site.
 
     2.2.0 :207 > node_from_site.to_s
- 		=> "<ul class=\"utility-nav\"> ..."  #does not match above
+    => "<ul class=\"utility-nav\"> ..."  #does not match above
 
 Again, a better solution would be to prompt the user for CSS and Xpath selectors, but given the problem constraints the solution I came up with was to use String#gsub to remove all non-letters. Any given HTML trickery from Nokogiri would be eliminated from both the input HTML and the NodeSet from the site. An example of a similar issue can be found in {this Stack Overflow thread}[http://stackoverflow.com/questions/12330033/creating-a-source-element-without-a-closing-tag-in-nokogiri].
 
