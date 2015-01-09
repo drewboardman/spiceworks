@@ -1,6 +1,3 @@
-require "pry"
-require "nokogiri"
-require "open-uri"
 module CountDescendents
   class Page
     attr_accessor :url, :html_input, :matching_node, :doc, :node_string
@@ -17,7 +14,7 @@ module CountDescendents
       begin
         Nokogiri::HTML(open(url))
       rescue StandardError=>e
-        $stdout.puts "Error: #{e}. This often occurs if the URL given is not correct. Check that you used the exact address (including https, etc)"
+        $stdout.puts "Error: #{e} for #{@url}. This often occurs if the URL given is not correct. Check that you used the exact address (including https, etc)"
       end
     end
 
@@ -28,10 +25,15 @@ module CountDescendents
 
     def grab_node(node_string)
       matches = []
-      @doc.traverse do |node|
-        matches << node if node.to_html.gsub(/\W+/, '').include?(node_string.gsub(/\W+/, ''))
+      if @doc.class == Nokogiri::HTML::Document
+        @doc.traverse do |node|
+          matches << node if node.to_html.gsub(/\W+/, '').include?(node_string.gsub(/\W+/, ''))
+        end
+        return matches.first
+      else
+        $stdout.puts "You entered an invalid URL. Nokogiri was not able to use the #traverse method. This usually means
+        that an invalid URL was passed, which couldn't be opened."
       end
-      return matches.first
     end
 
     def descendent_count
@@ -42,8 +44,17 @@ module CountDescendents
       return count
     end
 
+    def desc_array_tags
+      tags = []
+      @matching_node.traverse do |desc|
+        tags << desc.name
+      end
+      return tags
+    end
+
   end
 end
 
-page = CountDescendents::Page.new(url: "http://stackoverflow.com/", html_input: '<div class="topbar-dialog siteSwitcher-dialog dno">')
-p page.descendent_count
+# page = CountDescendents::Page.new(url: "\"http://www.bestbuy.com, html_input: '<ul class="utility-nav">')
+# p page.descendent_count
+# p page.desc_array_tags
