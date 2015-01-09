@@ -26,7 +26,7 @@ To run the program, simply make sure you are in the countDescendents/count_desce
 
     $ ruby count_descendents.rb
 
-From there, follow the $stdout command messages in the console. When entering input, do not use quotes to indicate you are entering a string (this is explained below in the "Notes and Improvements" section). Also, be sure to enter the full web address that you are looking to parse. For example:
+From there, follow the $stdout command messages in the console. When entering input, do not use quotes to indicate you are entering a string (this is explained below in the "Notes" section). Also, be sure to enter the full web address that you are looking to parse. For example:
 
     $ http://www.bestbuy.com 		#valid URL input
     $ www.bestbuy.com        		#invalid input.
@@ -46,6 +46,8 @@ There are several notes I would like to make about the design of the gem and the
 The solution was to take the HTML as a string, convert that string into a Nokogiri::Document::Element, and then convert that into a string. This ensures that when I compare with the #to_s version of any given node on the site, they will match. Several issues arrise.
 
 * Nokogiri adds escape characters when using the Node#to_s method. So the following happens:
+
+* STDIN will take "" as string input, which will mess with open-uri's ability to read the URL or node.
 
 * Node#to_s on input HTML returns
 
