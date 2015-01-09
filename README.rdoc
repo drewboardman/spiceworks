@@ -47,11 +47,13 @@ The solution was to take the HTML as a string, convert that string into a Nokogi
 * Nokogiri adds escape characters when using the Node#to_s method. So the following happens:
 
 * Node#to_s on input HTML returns
+
  	$ "<ul class=\"utility-nav\"/>"
 
 As you can see, there are added escape characters here that return false when compared with the site NodeSet.
 
 * Node#to_html on input HTML returns
+
   $ "<ul class=\"utility-nav\"></ul>" 
 
 This adds a closing tag, not found in the NodeSet on the site.
