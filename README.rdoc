@@ -20,6 +20,8 @@ CountDescendents is a gem that returns the descendent nodes for a given user inp
 
 === Synopsis and Instructions
 
+First step is to bundle install (if you don't currently have the required gems installed).
+
 To run the program, simply make sure you are in the countDescendents/count_descendents/lib$ and run:
 
     $ ruby count_descendents.rb
