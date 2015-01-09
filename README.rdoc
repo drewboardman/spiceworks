@@ -20,18 +20,18 @@ CountDescendents is a gem that returns the descendent nodes for a given user inp
 
 === Synopsis and Instructions
 
-To run the program, simply make sure you are in the `countDescendents/count_descendents/lib$` and run:
+To run the program, simply make sure you are in the countDescendents/count_descendents/lib$ and run:
 
     $ ruby count_descendents.rb
 
-From there, follow the `$stdout` command messages in the console. When entering input, do not use quotes to indicate you are entering a string (this is explained below in the "Notes and Improvements" section). Also, be sure to enter the full web address that you are looking to parse. For example:
+From there, follow the $stdout command messages in the console. When entering input, do not use quotes to indicate you are entering a string (this is explained below in the "Notes and Improvements" section). Also, be sure to enter the full web address that you are looking to parse. For example:
 
     $ http://www.bestbuy.com 		#valid URL input
     $ www.bestbuy.com        		#invalid input.
 
 === Testing
 
-To run the test suite, enter the directory `countDescendents/count_descendents$` and run:
+To run the test suite, enter the directory countDescendents/count_descendents$ and run:
 
     $ rspec spec
 
@@ -39,13 +39,13 @@ The errors outputted are normal, and are a result of tests that input invalid ar
 
 === Notes
 
-There are several notes I would like to make about the design of the gem and the decisions I made. The most pressing would be the `Page#grab_node` method. There are quirks with how Nokogiri and open-uri function that makes it tricky to take a raw HTML element and find a `Nokogiri::Document::Element` (which is a node) or an XML node. The best solution to this would be to prompt the user for css or xml selectors, and then use an Xpath command to find the node that way. Given the instructions, this would not solve the instructions given by the problem.
+There are several notes I would like to make about the design of the gem and the decisions I made. The most pressing would be the Page#grab_node method. There are quirks with how Nokogiri and open-uri function that makes it tricky to take a raw HTML element and find a Nokogiri::Document::Element (which is a node) or an XML node. The best solution to this would be to prompt the user for css or xml selectors, and then use an Xpath command to find the node that way. Given the instructions, this would not solve the instructions given by the problem.
 
-The solution was to take the HTML as a string, convert that string into a `Nokogiri::Document::Element`, and then convert that into a string. This ensures that when I compare with the `#to_s` version of any given node on the site, they will match. Several issues arrise.
+The solution was to take the HTML as a string, convert that string into a Nokogiri::Document::Element, and then convert that into a string. This ensures that when I compare with the #to_s version of any given node on the site, they will match. Several issues arrise.
 
-* Nokogiri adds escape characters when using the `Node#to_s` method. So the following happens:
+* Nokogiri adds escape characters when using the Node#to_s method. So the following happens:
 
-* `Node#to_s` on input HTML returns
+* Node#to_s on input HTML returns
 
  	$ "<ul class=\"utility-nav\"/>"
 
@@ -55,15 +55,15 @@ As you can see, there are added escape characters here that return false when co
 
     $ "<ul class=\"utility-nav\"></ul>" 
 
-This adds a closing tag, not found in the `NodeSet` on the site.
+This adds a closing tag, not found in the NodeSet on the site.
 
-Again, a better solution would be to prompt the user for CSS and Xpath selectors, but given the problem constraints the solution I came up with was to use `String#gsub` to remove all non-letters. Any given HTML trickery from Nokogiri would be eliminated from both the input HTML and the NodeSet from the site. An example of a similar issue can be found in {this Stack Overflow thread}[http://stackoverflow.com/questions/12330033/creating-a-source-element-without-a-closing-tag-in-nokogiri].
+Again, a better solution would be to prompt the user for CSS and Xpath selectors, but given the problem constraints the solution I came up with was to use String#gsub to remove all non-letters. Any given HTML trickery from Nokogiri would be eliminated from both the input HTML and the NodeSet from the site. An example of a similar issue can be found in {this Stack Overflow thread}[http://stackoverflow.com/questions/12330033/creating-a-source-element-without-a-closing-tag-in-nokogiri].
 
 === Finding the correct node
 
 With the above solution, now we can find the correct node and perform whatever operations we want (in this case, grab all descendents and return their count). I also added a method to return an array of their HTML tags, as seen in the problem description.
 
-This works mainly using the `Node#traverse` method. This recursively searches each node (and their children, children-of-children, etc). These are added to an empty array, which is then counted. The HTML tags array is returned using the `Page#desc_array_tags` method.
+This works mainly using the Node#traverse method. This recursively searches each node (and their children, children-of-children, etc). These are added to an empty array, which is then counted. The HTML tags array is returned using the Page#desc_array_tags method.
 
 === Improvements
 
