@@ -59,6 +59,14 @@ module CountDescendents
     		page = Page.new(url: "google", html_input: "invalid input")
     		expect{page.desc_array_tags}.to output("Your node was invalid.\n").to_stdout
     	end
+
+    	it "returns the correct array when given valid input" do
+    		page = Page.new(url: "http://ruby.bastardsbook.com/chapters/exception-handling/", html_input: '<ul class="headings">')
+    		expect(page.desc_array_tags).to eq(["text", "text", "a", "li", "text",
+    																			  "text", "a", "li", "text", "text", 
+    																			  "a", "li", "text", "text", "a", "li", 
+    																			  "text", "text", "a", "li", "text", "ul"])
+    	end
     end
   end
 end
