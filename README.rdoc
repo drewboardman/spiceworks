@@ -45,23 +45,33 @@ There are several notes I would like to make about the design of the gem and the
 
 The solution was to take the HTML as a string, convert that string into a Nokogiri::Document::Element, and then convert that into a string. This ensures that when I compare with the #to_s version of any given node on the site, they will match. Several issues arrise.
 
-* Nokogiri adds escape characters when using the Node#to_s method. So the following happens:
+* Nokogiri adds escape characters when using the Node#to_s or #to_s methods.
+* Nokogiri adds closing HTML tags when using the Node#to_html or #to_s methods.
 
-	* Node#to_s on input HTML returns
+This block illustrates the issue:
 
- 	$ "<ul class=\"utility-nav\"/>"
+    html_input = '<ul class="utility-nav">'
 
-		As you can see, there are added escape characters here that return false when compared with the site NodeSet.
+    node_string = Nokogiri::HTML::DocumentFragment.parse('<ul class="utility-nav">').child
 
-	* Node#to_html on input HTML returns
+    2.2.0 :202 > node_string.class
+    => Nokogiri::XML::Element 
 
-    $ "<ul class=\"utility-nav\"></ul>" 
+    2.2.0 :203 > node_string.to_s
+    => "<ul class=\"utility-nav\"></ul>"  #adds extra escape characters and closing tag
+    2.2.0 :204 > node_string.to_html
+    => "<ul class=\"utility-nav\"></ul>"  #same effect
 
-	This adds a closing tag, not found in the NodeSet on the site.
+These results do not match use #to_s or #to_html on a NodeSet element found within the site.
+
+    2.2.0 :207 > node_from_site.to_s
+ 				=> "<ul class=\"utility-nav\"> ..."  #does not match above
+
+Again, a better solution would be to prompt the user for CSS and Xpath selectors, but given the problem constraints the solution I came up with was to use String#gsub to remove all non-letters. Any given HTML trickery from Nokogiri would be eliminated from both the input HTML and the NodeSet from the site. An example of a similar issue can be found in {this Stack Overflow thread}[http://stackoverflow.com/questions/12330033/creating-a-source-element-without-a-closing-tag-in-nokogiri].
 
 * STDIN will take "" as string input, which will mess with open-uri's ability to read the URL or node.
 
-Again, a better solution would be to prompt the user for CSS and Xpath selectors, but given the problem constraints the solution I came up with was to use String#gsub to remove all non-letters. Any given HTML trickery from Nokogiri would be eliminated from both the input HTML and the NodeSet from the site. An example of a similar issue can be found in {this Stack Overflow thread}[http://stackoverflow.com/questions/12330033/creating-a-source-element-without-a-closing-tag-in-nokogiri].
+This is not so much a bug as it is the constraints of open-uri. We just need to prompt the user to not designate their input with quotes.
 
 === Finding the correct node
 
