@@ -16,6 +16,13 @@ module CountDescendents
       end
     end
 
+    context "#node_string_convert" do
+      it "returns a string" do
+        page = Page.new(url: "google", html_input: '<ul class="utility-nav">')
+        expect(page.node_string_convert(page.html_input).class).to eq(String)
+      end
+    end
+
     context "#parse_html" do
       it "creates an object of class Nokogiri::HTML::Document when given a url" do
         page = Page.new(url: "http://www.bestbuy.com")
