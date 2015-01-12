@@ -1,3 +1,5 @@
+require "fuzzy_match"
+
 module CountDescendents
   class Page
     attr_accessor :url, :html_input, :matching_node, :doc, :node_string
@@ -28,7 +30,9 @@ module CountDescendents
 
       begin
         @doc.traverse do |node|
-          matches << node if node.to_html.gsub(/\W+/, '').include?(node_string.gsub(/\W+/, ''))
+          # matches << node if node.to_html.gsub(/\W+/, '').include?(node_string.gsub(/\W+/, ''))
+          # matches << node if FuzzyMatch.new([node.to_html]).find(node_string)
+          matches << node if FuzzyMatch.new([node.to_xml]).find(node_string)
         end
       rescue
         $stdout.puts "You entered an invalid URL. Nokogiri was not able to use the #traverse method. This usually means that an invalid URL was passed, which couldn't be opened."
